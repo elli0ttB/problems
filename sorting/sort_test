@@ -1,0 +1,10 @@
+from quicksort import populate
+
+def test(sorting_algorithm):
+    arr = populate(15);
+    copy = arr[:]
+    copy.sort()
+    if c
+    sort(copy)
+
+
