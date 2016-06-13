@@ -1,4 +1,4 @@
-.swp
-.pyc
-.egg-info/
+*.swp
+*.pyc
+*.egg-info/*
 when-changed
