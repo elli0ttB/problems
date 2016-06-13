@@ -25,6 +25,7 @@ class SetOfStacks():
             del self.stacks[index]
         return ans
 
+
 class Node():
     def __init__(self, d, next=None):
         self.next = next
@@ -55,6 +56,10 @@ class Stack():
         return self.top.data
 
     def pop(self):
+    def sort(self):
+        """
+        """
+
         _checkTop(self)
         self.size -= 1
         val = self.top.data
@@ -64,84 +69,46 @@ class Stack():
     def __len__(self):
         return self.size
 
-    def sort(self):
-        """
-        First understand what the problem is!!!
-        """
+    def easy_sort(stack):
+        ordered = Stack()
+        while ! stack.isEmpty():
+            tmp = stack.pop()
+            while not ordered.isEmpty() and ordered.peek() < tmp:
+                stack.push(ordered.pop())
+            ordered.push(tmp)
+        return ordered
 
-        """
+    def sort(stack, ascending=True):
+        if stack.isEmpty():
+            return
+        pivot = stack.peek()
+        lessThan, greaterThan, equalTo = Stack(), Stack(), Stack()
 
-        1 --- done
-        2 --- a = pop()
+        while not stack.isEmpty():
+            top = stack.pop()
+            if top < pivot:
+                lessThan.push(top)
+            elif top == pivot:
+                equalTo.push(top)
+            else:
+                greaterThan.push(top)
 
-        what sort works well with a stack
-        bubble sort?
-        a & b
+        lessThan = sort(lessThan, ascending=True)
+        greaterThan = sort(greaterThan, ascending=False)
 
-        We need to sort the stack. Ideally, it should be in O(nlog(n)) time.
-        Presumably, we should use O(1) extra memory.
+        if ascending:
+            ordered = lessThan
+            backwards = greaterThan
+        else:
+            ordered = greaterThan
+            backwards = lessThan
 
-        One way would be to copy it into an array, quicksort the array, and
-        then push it back onto the stack. That is probably what I would typically do
-
-        list = []
-        while not self.isEmpty:
-            list.append(self.pop())
-        quicksort(list) # ascending
-        for item in reversed(list):
-            stack.push(item)
-
-        can we partition the stack
-        """
-
-        def main_sort(stack):
-            sort(stack, False)
-
-        def sort(stack, reversed):
-            if stack.isEmpty():
-                return
-
-            # do a quicksort partition, except using more memory
-            pivot = stack.peek()
-            lessThan = Stack()
-            greaterThan = Stack()
-            equalTo = Stack()
-            while not stack.isEmpty():
-                # We do this to avoid the problem that occors when the
-                # input is all equal.
-                a = stack.pop()
-                if a < pivot:
-                    lessThan.push(a)
-                elif a == pivot:
-                    equalTo.push(a)
-                else:
-                    greaterThan.push(a)
-
-            # recursively sort the sub-stacks
-            # we sort greaterThan oppossite the order
-            # we are sorted for ease of concatenation.
-            # an alternative would be to sort lessThan in opposite order,
-            # clear the stack and push it back onto itself, but this is simpler.
-            lessThan = sort(lessThan, reversed)
-            greaterThan = sort(greaterThan, not reversed)
-
-            # greaterThan is sorted in reverse order, so we can
-            # concatanate it to lessThan
-            if reversed:
-                lessThan, greaterThan = greaterThan, lessThan
-
-            # normally this does keep the sort stable, but what
-            # happens when reversed is true?
-            while not equalTo.isEmpty():
-                lessThan.push(equalTo.pop())
-
-            while not greaterThan.isEmpty():
-                lessThan.push(greaterThan.pop())
-
-            # we cannot copy memory efficiently, so let's just return the result'
-
-        # I should look at how mergeSort uses working memory!!!
-
+        while not equalTo.isEmpty():
+            # TODO figure out stability
+            ordered.push(equalTo.pop())
+        while not backwards.isEmpty():
+            ordered.push(backwards.pop())
+        return orderd
 
 class MyQueue():
     """
